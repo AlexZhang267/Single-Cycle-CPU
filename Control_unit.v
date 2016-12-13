@@ -95,6 +95,19 @@ module Control_unit(op,func,Z, JUMP, M2REG, BRANCH, WMEM, ALUC, SHIFT, ALUIMM, W
 						REGRT = 0;//选择rd
 						$display("Control_unit slt");
 					end
+					6'b000000:begin
+						JUMP = 0;
+						M2REG = 0;//应该是ALU直接输出
+						BRANCH = 0;//暂时不用管
+						WMEM = 0;//不需要写存储器 
+						ALUC = 4'b1111;//默认加法是0000
+						SHIFT = 0;
+						ALUIMM = 0;
+						WREG = 0;
+						SEXT = 0;
+						REGRT = 0;//选择rd
+						$display("Control_unit nop");
+					end
 				endcase
 			end
 				//addi
@@ -182,6 +195,20 @@ module Control_unit(op,func,Z, JUMP, M2REG, BRANCH, WMEM, ALUC, SHIFT, ALUIMM, W
 				SEXT = 1;
 				REGRT = 1;
 				$display("Control_unit lw");
+			end
+			//jump
+			6'b000010:begin
+				JUMP = 1;
+				M2REG = 0;//应该是ALU直接输出
+				BRANCH = 0;//暂时不用管
+				WMEM = 0;//不需要写存储器 
+				ALUC = 4'b0000;//默认加法是0000
+				SHIFT = 0;
+				ALUIMM = 0;
+				WREG = 0;
+				SEXT = 0;
+				REGRT = 0;//选择rd
+				$display("Control_unit jump");
 			end
 		endcase
 	end
