@@ -1,0 +1,1 @@
+iverilog -o simulator Simulator.v  ALU.v Single_cycle_computer.v execute_inst.v Control_unit.v Data_mem.v Mem_Reg_selector.v Refile.v Reg_Imm_selector.v Rtselectot.v Shift_selector.v Ext.v
