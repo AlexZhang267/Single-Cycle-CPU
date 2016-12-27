@@ -17,7 +17,7 @@ module Single_Cycle_CPU(clk);
 
 	wire[27:0] jump_Address;
 
-	reg Z = 0;
+	wire Z;
 
 	//control unit  产生的信号
 	wire JUMP, M2REG, BRANCH, WMEM, SHIFT, ALUIMM, WREG, SEXT, REGRT;
@@ -48,9 +48,9 @@ module Single_Cycle_CPU(clk);
 
 
 	wire[31:0] ALU_result;
-	wire zero =0;
+	// wire zero =0;
 
-	ALU alu(A, B, ALUC, zero, ALU_result);
+	ALU alu(A, B, ALUC, Z, ALU_result);
 
 	wire[31:0] mem_data_out;
 	Data_mem data_mem(ALU_result,Q2,WMEM,mem_data_out, clk);
@@ -58,67 +58,117 @@ module Single_Cycle_CPU(clk);
 	Mem_Reg_selector mem_Reg_selector(ALU_result,mem_data_out,M2REG,DI);
 
 
-	always @(inst) begin
-		$display("inst is %b",inst);
-		$display("op is %b", op);
-		$display("rs is %b", rs);
-		$display("rt is %b", rt);
-		$display("rd is %b", rd);
-		$display("sa is %b", sa);
-	end
+	// always @(inst) begin
+	// 	$display("inst is %b",inst);
+	// 	$display("op is %b", op);
+	// 	$display("rs is %b", rs);
+	// 	$display("rt is %b", rt);
+	// 	$display("rd is %b", rd);
+	// 	$display("sa is %b", sa);
+	// end
 
 
 	initial
 		begin
-			instraction[0]= 32'b00000000000000010000100000100000;
-			instraction[1]= 32'b00000000000000010000100000100000;
-			instraction[2]= 32'b00000000000000010000100000100000;
-			instraction[3]= 32'b00000000000000000000000000000000;
-			// instraction[4]= 32'b00000000000000010000100000100000;
-			// instraction[5]= 32'b00000000000000010000100000100000;
-			// instraction[6]= 32'b00000000000000010000100000100000;
-			// instraction[7]= 32'b00000000000000010000100000100000;
-			//sub
-			instraction[4]= 32'b00001000000000000000000000000000;
-			instraction[5]= 32'b00000000001000000000100000100010;
-			instraction[6]= 32'b00000000001000000000100000100100;
-			instraction[7]= 32'b00000000001000000000100000100100;
-			instraction[8]= 32'b00000000000000010000100000100000;
-			instraction[9]= 32'b00000000000000010000100000100000;
-			instraction[10]= 32'b00000000000000010000100000100101;
-			instraction[11]= 32'b00000000000000010000100000100101;
+			//add reg[1] = reg[0] + reg[1]
+			//final reg[1] = 4
+			instraction[0] = 32'b00000000000000010000100000100000;
+			instraction[1] = 32'b00000000000000010000100000100000;
+			instraction[2] = 32'b00000000000000010000100000100000;
+			//nop
+			instraction[3] = 32'b00000000000000000000000000000000;
 
-			//slt
+			//sub reg[1] = reg[1] - reg[0]
+			//reg[1] = 3
+			instraction[4] = 32'b00000000001000000000100000100010;
+
+			//and: reg[1] = reg[1] & reg[0]
+			//then reg[1] = 1
+			instraction[5] = 32'b00000000000000010000100000100100;
+
+			//addi: reg[1] = reg[1] + imm
+			//then: reg[1] = 8(0000...0001000)
+			instraction[6] = 32'b00100000001000010000000000000111;
+
+			//or reg[1] = reg[1] || reg[0]
+			//then reg[1] = 9
+			instraction[7] = 32'b00000000001000000000100000100101;
+
+			//andi reg[1] = reg[1] & 12
+			//then reg[1] = 8
+			instraction[8] = 32'b00110000001000010000000000001100;
+
+			//ori reg[1] = reg[1] || 7
+			//then reg[1] = 15
+			instraction[9] = 32'b00110100001000010000000000000111;
+
+			//sw:memory[reg[2]+1] = reg[0]
+			//then:memory[reg[2]+1] = 1
+			instraction[10]= 32'b10101100010000000000000000000001;
+
+			//lw:reg[1] = memory[reg[2]+1]
+			//then reg[1] = 1
+			instraction[11]= 32'b10001100010000010000000000000001;
+
+			//slt:reg[0] reg[1]
+			//then reg[1] = 0
 			instraction[12]= 32'b00000000000000010000100000101010;
 
-			//addi
-			instraction[13]= 32'b00100000001000010000100000101010;
-							  // 00000000000000000000100000101011
+			//slti
+			//reg[1] = 1
+			instraction[13]= 32'b00101000000000010000000000000010;
 
-			instraction[14]= 32'b00110000001000010000000000101010;
-							  // 00000000000000000000000000101010
+			//nop
+			instraction[14]= 32'b00000000000000000000000000000000;
 
-			instraction[15]= 32'b00110100001000011000000000010101;
-							  // 11111111111111111000000000111111
-			instraction[16]= 32'b00101000001000010000000000010101;
+			instraction[15] = 32'b00000000000000010000100000100000;
 
-			instraction[17]= 32'b10101100000000010000000000000001;
+			//bne reg[0]!=reg[1]
+			//then brance
+			instraction[16]= 32'b00010100000000010000000000000010;
 
-			instraction[18]= 32'b00000000000000010000100000100000;
+			//nop
+			instraction[17]= 32'b00000000000000000000000000000000;
 
-			instraction[19]= 32'b10001100000000010000000000000001;
+			//beq reg[0]==reg[2]
+			//then brance
+			instraction[18]= 32'b00010000000000100000000000000010;
+
+			//nop
+			instraction[19]= 32'b00000000000000000000000000000000;
+
+			//jump
+			instraction[20]= 32'b00001000000000000000000000000000;
+
 
 		end
 
 		always @(posedge clk) begin
-			PC = PC + 4;
 			$display("Clk posedge PC is %d",PC);
+			
+			inst = instraction[PC/4];
+			$display("inst is %b",inst);
+			
+		end
+
+		always @(negedge clk) begin
+			$display("op is %b", op);
+			$display("rs is %b", rs);
+			$display("rt is %b", rt);
+			$display("rd is %b", rd);
+			$display("sa is %b", sa);
 			if (JUMP==1) begin
 				PC = {PC[31:28],jump_Address};
 			end
-			inst = instraction[PC/4];
+			else begin
+				if (BRANCH==1) begin
+					PC = PC + {imm,2'b00};
+				end
+				else
+					PC = PC + 4;
+				end
 		end
-		always @(negedge clk) begin
-		$display("Clk negedge");
-	end
+		// always @(negedge clk) begin
+		// 	$display("Clk negedge");
+	// end
 endmodule

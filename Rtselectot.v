@@ -8,13 +8,14 @@ module Rtselector(rt,rd, REGRT, ND);
 		ND = 0;
 	end
 
-	always @(rt or rd) begin
+	//add or regrt
+	always @(rt or rd or REGRT) begin
 		case(REGRT)
 			0:ND = rd;
 			1:ND = rt;
 			// $display("Rtselector: rd is %b rt is %b REGRT is %b ND is %b",rd,rt,REGRT,ND);
 		endcase
-		$display("Rtselector: rd is %b rt is %b REGRT is %b ND is %b",rd,rt,REGRT,ND);
+		// $display("Rtselector: rd is %b rt is %b REGRT is %b ND is %b",rd,rt,REGRT,ND);
 		
 	end
 endmodule

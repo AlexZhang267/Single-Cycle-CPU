@@ -210,6 +210,47 @@ module Control_unit(op,func,Z, JUMP, M2REG, BRANCH, WMEM, ALUC, SHIFT, ALUIMM, W
 				REGRT = 0;//选择rd
 				$display("Control_unit jump");
 			end
+			//bne
+			6'b000101:begin
+				JUMP=0;
+				M2REG = 0;
+				$display("ZERO %b",Z);
+				if (Z==1)begin 
+					BRANCH=1;
+					$display("BRANCH == 1");
+				end
+				else begin
+					BRANCH=0;
+				end
+				WMEM = 0;
+				ALUC = 4'b0101;
+				SHIFT = 0;
+				ALUIMM = 0;
+				WREG = 0;
+				SEXT = 0;
+				REGRT = 0;
+				$display("Control_unit bne");
+			end
+			6'b000100:begin
+				JUMP=0;
+				M2REG = 0;
+				$display("ZERO %b",Z);
+				if (Z==1)begin 
+					BRANCH=1;
+					$display("BRANCH == 1");
+				end
+				else begin
+					BRANCH=0;
+				end
+				WMEM = 0;
+				ALUC = 4'b0110;
+				SHIFT = 0;
+				ALUIMM = 0;
+				WREG = 0;
+				SEXT = 0;
+				REGRT = 0;
+				$display("Control_unit bne");
+			end
 		endcase
 	end
 

@@ -1,4 +1,4 @@
-module inst_mem(PC,inst);
+	module inst_mem(PC,inst);
 	output inst;
 	input PC;
 	reg [7:0] instraction[0:31];

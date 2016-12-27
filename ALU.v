@@ -1,7 +1,7 @@
 module ALU(A, B, ALUC, zero, result);
 	input signed [31:0] A, B;
 	input[3:0] ALUC;
-	output reg zero = 0;
+	output reg zero;
 	output reg [31:0] result;
 
 	initial begin
@@ -29,6 +29,24 @@ module ALU(A, B, ALUC, zero, result);
 				end
 				else begin
 					result = 0;
+				end
+			end
+			4'b0101:begin
+				if (A!=B) begin
+					zero=1;
+					$display("zero==1");
+				end
+				else begin
+					zero=0;
+					$display("zero==0");
+				end
+			end
+			4'b0110:begin
+				if (A==B) begin
+					zero=1;
+				end
+				else begin
+					zero=0;
 				end
 			end
 		endcase
