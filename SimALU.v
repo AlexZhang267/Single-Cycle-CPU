@@ -9,7 +9,7 @@ module SimALU;
 
 	ALU alu(A,B,aluc,zero,result);
 
-	initial #stop_time $finish;	
+	initial #stop_time $finish;
 
 	initial begin
 		#10 A = 6;

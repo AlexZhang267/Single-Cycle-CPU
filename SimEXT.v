@@ -6,7 +6,7 @@ module SimEXT;
 	parameter stop_time = 60;
 	initial #stop_time $finish;
 
-	EXT ext(imme,SEXT,imm);
+	Ext ext(imme,SEXT,imm);
 
 	initial begin
 		#10 imme = 16'b0111111111111111;

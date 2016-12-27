@@ -8,8 +8,8 @@ module SimRegfile;
 	wire[31:0] Q1;
 	wire[31:0] Q2;
 
-	parameter stop_time = 1500;
-	Refile rf(rs,rt,ND,DI,clk,WREG,Q1,Q2);
+	parameter stop_time = 250;
+	Regfile rf(rs,rt,ND,DI,clk,WREG,Q1,Q2);
 
 	initial #stop_time $finish;
 
@@ -20,7 +20,9 @@ module SimRegfile;
 		DI = 1;
 		ND = 5'b00001;
 		repeat(10)
+		  begin
 			#10 clk = ~clk;
-			DI = DI + 1;
+			#10 DI = DI + 1;
+		end
 	end
 endmodule

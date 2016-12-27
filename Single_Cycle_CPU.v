@@ -1,6 +1,6 @@
 module Single_Cycle_CPU(clk);
 	input clk;
-	reg [31:0] instraction[0:20];
+	reg [31:0] instruction[0:20];
 	reg[6:0] PC = 7'b0000000;
 
 	reg[31:0] inst;
@@ -72,73 +72,73 @@ module Single_Cycle_CPU(clk);
 		begin
 			//add reg[1] = reg[0] + reg[1]
 			//final reg[1] = 4
-			instraction[0] = 32'b00000000000000010000100000100000;
-			instraction[1] = 32'b00000000000000010000100000100000;
-			instraction[2] = 32'b00000000000000010000100000100000;
+			instruction[0] = 32'b00000000000000010000100000100000;
+			instruction[1] = 32'b00000000000000010000100000100000;
+			instruction[2] = 32'b00000000000000010000100000100000;
 			//nop
-			instraction[3] = 32'b00000000000000000000000000000000;
+			instruction[3] = 32'b00000000000000000000000000000000;
 
 			//sub reg[1] = reg[1] - reg[0]
 			//reg[1] = 3
-			instraction[4] = 32'b00000000001000000000100000100010;
+			instruction[4] = 32'b00000000001000000000100000100010;
 
 			//and: reg[1] = reg[1] & reg[0]
 			//then reg[1] = 1
-			instraction[5] = 32'b00000000000000010000100000100100;
+			instruction[5] = 32'b00000000000000010000100000100100;
 
 			//addi: reg[1] = reg[1] + imm
 			//then: reg[1] = 8(0000...0001000)
-			instraction[6] = 32'b00100000001000010000000000000111;
+			instruction[6] = 32'b00100000001000010000000000000111;
 
 			//or reg[1] = reg[1] || reg[0]
 			//then reg[1] = 9
-			instraction[7] = 32'b00000000001000000000100000100101;
+			instruction[7] = 32'b00000000001000000000100000100101;
 
 			//andi reg[1] = reg[1] & 12
 			//then reg[1] = 8
-			instraction[8] = 32'b00110000001000010000000000001100;
+			instruction[8] = 32'b00110000001000010000000000001100;
 
 			//ori reg[1] = reg[1] || 7
 			//then reg[1] = 15
-			instraction[9] = 32'b00110100001000010000000000000111;
+			instruction[9] = 32'b00110100001000010000000000000111;
 
 			//sw:memory[reg[2]+1] = reg[0]
 			//then:memory[reg[2]+1] = 1
-			instraction[10]= 32'b10101100010000000000000000000001;
+			instruction[10]= 32'b10101100010000000000000000000001;
 
 			//lw:reg[1] = memory[reg[2]+1]
 			//then reg[1] = 1
-			instraction[11]= 32'b10001100010000010000000000000001;
+			instruction[11]= 32'b10001100010000010000000000000001;
 
 			//slt:reg[0] reg[1]
 			//then reg[1] = 0
-			instraction[12]= 32'b00000000000000010000100000101010;
+			instruction[12]= 32'b00000000000000010000100000101010;
 
 			//slti
 			//reg[1] = 1
-			instraction[13]= 32'b00101000000000010000000000000010;
+			instruction[13]= 32'b00101000000000010000000000000010;
 
 			//nop
-			instraction[14]= 32'b00000000000000000000000000000000;
+			instruction[14]= 32'b00000000000000000000000000000000;
 
-			instraction[15] = 32'b00000000000000010000100000100000;
+			instruction[15] = 32'b00000000000000010000100000100000;
 
 			//bne reg[0]!=reg[1]
 			//then brance
-			instraction[16]= 32'b00010100000000010000000000000010;
+			instruction[16]= 32'b00010100000000010000000000000010;
 
 			//nop
-			instraction[17]= 32'b00000000000000000000000000000000;
+			instruction[17]= 32'b00000000000000000000000000000000;
 
 			//beq reg[0]==reg[2]
 			//then brance
-			instraction[18]= 32'b00010000000000100000000000000010;
+			instruction[18]= 32'b00010000000000100000000000000010;
 
 			//nop
-			instraction[19]= 32'b00000000000000000000000000000000;
+			instruction[19]= 32'b00000000000000000000000000000000;
 
 			//jump
-			instraction[20]= 32'b00001000000000000000000000000000;
+			instruction[20]= 32'b00001000000000000000000000000000;
 
 
 		end
@@ -146,7 +146,7 @@ module Single_Cycle_CPU(clk);
 		always @(posedge clk) begin
 			$display("Clk posedge PC is %d",PC);
 			
-			inst = instraction[PC/4];
+			inst = instruction[PC/4];
 			$display("inst is %b",inst);
 			
 		end
